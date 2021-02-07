@@ -1,6 +1,6 @@
-let db = require('../database/models');
+let db = require('../../database/models');
 
-let controller = {
+let AdministracionController = {
   index: function (req, res, next) {
     db.Prueba.findAll()
       .then(prueba => {
@@ -10,4 +10,4 @@ let controller = {
   },
 };
 
-module.exports = controller;
+module.exports = AdministracionController;
