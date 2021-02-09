@@ -22,10 +22,10 @@ export default class Register extends React.Component {
     });
   }
 
-  handleSubmit(event) {
+  handleSubmit = async event => {
     event.preventDefault()
 
-    axios
+    let response = await axios
       .post(
         `http://localhost:3000/api/users/register`,
         {
@@ -33,23 +33,21 @@ export default class Register extends React.Component {
           password: this.state.password,
         }
       )
-      .then((res) => {
-        console.log(res);
-        console.log(res.data.meta.status);
-        if (res.data.meta.status == 250) {
-          this.state.registrationErrors = res.data.meta.message;
-          console.log(this.state.registrationErrors);
+      console.log(response.status);
+        
+        if(response.status == 250) {
+          this.setState({ registrationErrors : 'el usuario ya existe'});
         }
-      });
+
+      /* if (res.data.meta.status == 250) {
+        this.state.registrationErrors = res.data.meta.message;
+      } */
   }
 
 
   render() {
     return (
       <div>
-        {this.state.registrationErrors != ''
-          ? this.state.registrationErrors
-          : ''}
         <form onSubmit={this.handleSubmit}>
           <div class="mb-3">
             <label for="email" class="form-label">
@@ -79,6 +77,7 @@ export default class Register extends React.Component {
               required
             />
           </div>
+          <div>{this.state.registrationErrors}</div>
           <div class="mb-3">
             <button type="submit" class="btn btn-primary">
               Register

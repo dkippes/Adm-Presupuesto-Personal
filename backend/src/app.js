@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
+var session = require('express-session');
 
 var apiUsersRouter = require('../src/routes/api/users');
 var apiAdministracionRouter = require('../src/routes/api/administracion');
@@ -15,6 +16,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({ secret: 'super secreto' }));
 
 app.use('/api/users', apiUsersRouter);
 app.use('/api/administracion', apiAdministracionRouter);
