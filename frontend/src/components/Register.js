@@ -22,10 +22,10 @@ export default class Register extends React.Component {
     });
   }
 
-  handleSubmit = async event => {
+  handleSubmit = event => {
     event.preventDefault()
 
-    let response = await axios
+    let response = axios
       .post(
         `http://localhost:3000/api/users/register`,
         {
@@ -33,7 +33,7 @@ export default class Register extends React.Component {
           password: this.state.password,
         }
       )
-      console.log(response.status);
+      console.log(response);
         
         if(response.status == 250) {
           this.setState({ registrationErrors : 'el usuario ya existe'});
