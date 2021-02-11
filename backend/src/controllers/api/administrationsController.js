@@ -30,6 +30,28 @@ let AdministrationsController = {
     });
   },
 
+  
+  last10Operations: function (req, res, next) {
+    db.Administrations.findAll({
+      limit: 10
+    })
+    .then(administration => {
+
+      res.json({
+        meta: {
+          status: 200,
+          state: 'OK',
+          url: '/api/administrations' + req.url,
+        },
+        data: {
+          last10Operations: administration,
+        },
+      });
+
+    })
+  },
+
+
   addOperation: (req, res, next) => {
     db.Administrations.create({
       concept: req.body.concept,
@@ -53,7 +75,6 @@ let AdministrationsController = {
       {
         concept: req.body.concept,
         amount: req.body.amount,
-        type: req.body.type,
         category: req.body.category,
       },
       {
