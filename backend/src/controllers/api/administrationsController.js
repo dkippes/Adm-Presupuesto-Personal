@@ -52,6 +52,8 @@ let AdministrationsController = {
   },
 
 
+  
+
   addOperation: (req, res, next) => {
     db.Administrations.create({
       concept: req.body.concept,
@@ -68,6 +70,8 @@ let AdministrationsController = {
       },
     });
   },
+
+
 
   modifyOperation: (req, res, next) => {
     console.log(req.params.id);
