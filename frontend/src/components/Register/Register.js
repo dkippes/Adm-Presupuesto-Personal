@@ -21,6 +21,7 @@ export default function Register() {
 
     return (
       <div>
+        <h1>Esto es el register</h1>
         <h2>{errorMsg}</h2>
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="mb-3">
@@ -54,7 +55,11 @@ export default function Register() {
             />
           </div>
           <div className="mb-3">
-            <button type="submit" className="btn btn-primary" onClick={register}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={register}
+            >
               Register
             </button>
           </div>

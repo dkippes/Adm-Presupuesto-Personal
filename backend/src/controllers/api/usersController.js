@@ -43,30 +43,18 @@ let usersController = {
     .then(user => {
       if(user == null) {
         res.json({
-          meta: {
-            status: 225,
-            state: 'ERROR',
-            message: 'El usuario no existe',
-            url: '/api/users' + req.url,
-          },
+          messageError: 'El usuario no existe',
         });
       } else {
         if(user.password == req.body.password) {
+          req.session.userLogged = user.email;
+          console.log(req.session.userLogged);
           res.json({
-            meta: {
-              status: 200,
-              state: 'OK',
-              url: '/api/users' + req.url,
-            },
+            messageOK: 'Usuario logeado con exito'
           });
         } else {
           res.json({
-            meta: {
-              status: 250,
-              state: 'ERROR',
-              message: 'Error de credenciales',
-              url: '/api/users' + req.url,
-            },
+            messageError: 'Error de credenciales',
           });
         }
       }

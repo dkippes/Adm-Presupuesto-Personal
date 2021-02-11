@@ -16,7 +16,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: 'super secreto' }));
+app.use(session({ secret: 'super secret' }));
 
 app.use('/api/users', apiUsersRouter);
 app.use('/api/administrations', apiAdministrationsRouter);

@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="container-sm">
       <header>
-        <Register></Register>
+        <Login></Login>
       </header>
     </div>
   );
