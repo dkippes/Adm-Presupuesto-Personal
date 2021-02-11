@@ -7,7 +7,7 @@ const cors = require('cors');
 var session = require('express-session');
 
 var apiUsersRouter = require('../src/routes/api/users');
-var apiAdministracionRouter = require('../src/routes/api/administracion');
+var apiAdministrationsRouter = require('../src/routes/api/administrations');
 
 var app = express();
 app.use(cors());
@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(session({ secret: 'super secreto' }));
 
 app.use('/api/users', apiUsersRouter);
-app.use('/api/administracion', apiAdministracionRouter);
+app.use('/api/administrations', apiAdministrationsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
