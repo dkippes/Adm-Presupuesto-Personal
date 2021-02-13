@@ -59,6 +59,16 @@ class OperationPanel extends Component {
         });
   }
 
+  deleteRequest = (id) => {
+      axios
+        .delete(
+          `http://localhost:3000/api/administrations/deleteOperation/${id}`
+        )
+        .then((response) => {
+          this.getRequest();
+        });
+  }
+
   modalInsertar = () => {
     this.setState({ modalInsertar: !this.state.modalInsertar });
   };
@@ -111,7 +121,7 @@ class OperationPanel extends Component {
               </button>
             </div>
             <div>
-              <Link to="/login">ah</Link>
+              <Link to="/login">Show Balance</Link>
             </div>
           </div>
 
@@ -143,7 +153,10 @@ class OperationPanel extends Component {
                       >
                         <FontAwesomeIcon icon={faEdit} />
                       </button>
-                      <button className="btn btn-danger">
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => { this.deleteRequest(operation.id) }}
+                      >
                         <FontAwesomeIcon icon={faTrashAlt} />
                       </button>
                     </td>
@@ -197,7 +210,6 @@ class OperationPanel extends Component {
                   onChange={this.handleChange}
                   name="type"
                   id="type"
-                  disabled
                 >
                   <option value="0">Spent</option>
                   <option value="1">Income</option>

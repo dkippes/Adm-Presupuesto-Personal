@@ -4,7 +4,7 @@ const storage = require('node-sessionstorage');
 let AdministrationsController = {
 
   totalBalance: function (req, res, next) {
-    db.Administrations.findAll({
+    /* db.Administrations.findAll({
       include: [{ association: 'users', where: { email: "pablo@pablo.com" } }],
     }).then((administration) => {
 
@@ -28,12 +28,12 @@ let AdministrationsController = {
           totalBalance: totalBalance
         }
       });
-    });
+    }); */
   },
 
   
   last10Operations: function (req, res, next) {
-    db.Administrations.findAll({
+    /* db.Administrations.findAll({
       limit: 10
     })
     .then(administration => {
@@ -49,7 +49,7 @@ let AdministrationsController = {
         },
       });
 
-    })
+    }) */
   },
 
   listOperations: function(req, res, next) {
@@ -113,20 +113,18 @@ let AdministrationsController = {
   },
 
   deleteOperation: (req, res, next) => {
+    
     console.log(req.params.id);
     db.Administrations.destroy({
       where: {
-        id: req.params.id,
-      },
-    });
+        id: req.params.id
+      }
+    })
 
     res.json({
-      meta: {
-        status: 200,
-        state: 'OK',
-        url: '/api/administrations' + req.url,
-      },
+      message: 'oka',
     });
+    
   },
 };
 

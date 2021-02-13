@@ -1,6 +1,5 @@
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Dashboard from './components/NavBar/NavBar';
 import Register from './components/Register/Register';
 import Login from './components/Register/Login';
 import OperationPanel from './components/OperationPanel/OperationPanel';
