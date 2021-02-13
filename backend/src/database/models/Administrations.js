@@ -30,12 +30,9 @@ module.exports = (sequelize, dataTypes) => {
   const Administration = sequelize.define(alias, cols, config);
 
   Administration.associate = function (models) {
-    Administration.belongsToMany(models.Users, {
+    Administration.belongsTo(models.Users, {
       as: 'users',
-      through: 'user_administration',
-      foreignKey: 'administration_id',
-      otherKey: 'user_id',
-      timestamps: false,
+      foreignKey: 'user_id',
     });
   };
 

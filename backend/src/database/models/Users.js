@@ -21,12 +21,9 @@ module.exports = (sequelize, dataTypes) => {
   const User = sequelize.define(alias, cols, config);
 
   User.associate = function (models) {
-    User.belongsToMany(models.Administrations, {
+    User.hasMany(models.Administrations, {
       as: 'administrations',
-      through: 'user_administration',
       foreignKey: 'user_id',
-      otherKey: 'administration_id',
-      timestamps: false,
     });
   };
 

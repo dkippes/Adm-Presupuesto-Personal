@@ -1,4 +1,5 @@
 let db = require('../../database/models');
+const storage = require('node-sessionstorage');
 
 let AdministrationsController = {
 
@@ -51,24 +52,41 @@ let AdministrationsController = {
     })
   },
 
+  listOperations: function(req, res, next) {
+    console.log(req.session.userLogged);
+    db.Users.findAll({
+      include: [{ association: 'administrations' }],
+      where: {
+        email: storage.getItem('userLogged'),
+      },
+    }).then((administration) => {
+      res.json(administration[0].administrations);
+    });
+  },
+
 
   
 
   addOperation: (req, res, next) => {
-    db.Administrations.create({
-      concept: req.body.concept,
-      amount: req.body.amount,
-      type: req.body.type,
-      category: req.body.category,
-    });
+      console.log(req.body);
+      db.Users.findOne({
+        where: {
+          email: storage.getItem('userLogged'),
+        },
+      }).then((user) => {
+        db.Administrations.create({
+          concept: req.body.concept,
+          amount: req.body.amount,
+          type: req.body.type,
+          category: req.body.category,
+          user_id: user.id,
+        });
+      });
 
-    res.json({
-      meta: {
-        status: 200,
-        state: 'OK',
-        url: '/api/administrations' + req.url,
-      },
-    });
+      res.json({
+        message: "oka"
+      })
+    
   },
 
 

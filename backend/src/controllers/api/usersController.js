@@ -1,7 +1,9 @@
 let db = require('../../database/models');
+const storage = require('node-sessionstorage');
 
 let usersController = {
   userList: function (req, res, next) {
+    console.log(req.session.userLogged);
     db.Users.findAll().then((users) => {
       res.json(users);
     });
@@ -18,6 +20,7 @@ let usersController = {
     }).then((user) => {
       console.log(user);
       if (user == null) {
+        
         db.Users.create({
           email: req.body.email,
           password: req.body.password,
@@ -26,6 +29,8 @@ let usersController = {
         res.json({
           messageOK: 'Usuario registrado con exito',
         });
+
+        
       }
 
       res.json({
@@ -43,18 +48,34 @@ let usersController = {
     .then(user => {
       if(user == null) {
         res.json({
-          messageError: 'El usuario no existe',
+          meta: {
+            status: 400,
+          },
+          data: {
+            message: 'El usuario no existe',
+          },
         });
       } else {
         if(user.password == req.body.password) {
-          req.session.userLogged = user.email;
-          console.log(req.session.userLogged);
+
+          storage.setItem('userLogged', user.email);
+          
           res.json({
-            messageOK: 'Usuario logeado con exito'
+            meta: {
+              status: 200
+            },
+            data: {
+              message: "Usuario logeado con exito"
+            }
           });
         } else {
           res.json({
-            messageError: 'Error de credenciales',
+            meta: {
+              status: 404,
+            },
+            data: {
+              message: 'Error de credenciales',
+            },
           });
         }
       }

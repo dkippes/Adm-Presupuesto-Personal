@@ -1,26 +1,40 @@
 import React, { useState } from 'react';
+import Nav from '../NavBar/NavBar';
 import '../Register/Register.css';
 import axios from 'axios';
 
 export default function Register() {
-
-  const [emailReg, setEmailReg] = useState('')
+  const [emailReg, setEmailReg] = useState('');
   const [passwordReg, setPasswordReg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   const register = () => {
-    axios.post('http://localhost:3000/api/users/register', { email: emailReg, password: passwordReg })
-      .then(response => {
-        console.log(response);
-        if(response.data.messageError) {
+    axios({
+      method: 'post',
+      url: 'http://localhost:3000/api/users/register',
+      data: {
+        email: emailReg,
+        password: passwordReg,
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.messageError) {
           setErrorMsg(response.data.messageError);
         }
+        if (response.data.messageOK) {
+          sessionStorage.setItem('userLogged', emailReg);
+          window.location = '/dashboard';
+        }
       });
-  }
+  };
 
-
+  if (sessionStorage.getItem('userLogged')) {
+    window.location = '/dashboard';
+  } else {
     return (
       <div>
+        <Nav></Nav>
         <h1>Esto es el register</h1>
         <h2>{errorMsg}</h2>
         <form onSubmit={(e) => e.preventDefault()}>
@@ -66,4 +80,5 @@ export default function Register() {
         </form>
       </div>
     );
+  }
 }
