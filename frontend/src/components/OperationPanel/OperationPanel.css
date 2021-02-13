@@ -1,0 +1,26 @@
+.operationPanel-container{
+    background-color: white;
+    border-radius: 8px;
+}
+
+
+.div-button-add {
+    margin: 15px 0 0 0 ;
+    display: flex;
+}
+
+.div-button-add div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin-top: 15px;
+}
+
+.btn-add-op {
+    width: 75%;
+}
+
+.div-button-add a {
+    width: 50%;
+}

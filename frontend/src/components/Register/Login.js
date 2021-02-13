@@ -1,38 +1,38 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../Register/Register.css';
+import React, { useState} from 'react'
 import axios from 'axios';
-import Login from './Login';
+import '../Register/Register.css';
+import { Link } from 'react-router-dom';
 
 export default function Register() {
-  const [emailReg, setEmailReg] = useState('');
-  const [passwordReg, setPasswordReg] = useState('');
+  const [emailLogin, setEmailLogin] = useState('');
+  const [passwordLogin, setPasswordLogin] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
-  const register = () => {
+  const login = () => {
     axios({
       method: 'post',
-      url: 'http://localhost:3000/api/users/register',
+      url: 'http://localhost:3000/api/users/login',
       data: {
-        email: emailReg,
-        password: passwordReg,
+        email: emailLogin,
+        password: passwordLogin,
       },
-    }).then(({ data: info }) => {
-      
-      if (info.meta.status == 404) {
-        setErrorMsg(info.data.message);
-      }
+    }).then(({data: info }) => {
+        
+        if (info.meta.status == 404 || info.meta.status == 400) {
+          setErrorMsg(info.data.message);
+        }
 
-      if (info.meta.status == 200) {
-        window.location = '/login';
-      }
-    });
+        if (info.meta.status == 200) {
+          window.location = '/operationPanel';
+        }
+      });
   };
 
+  
   return (
     <>
       <div className="container-sm register">
-        <h1 className="register-title">Registration</h1>
+        <h1 className="register-title">Login</h1>
         <h2>{errorMsg}</h2>
 
         <div>
@@ -48,7 +48,7 @@ export default function Register() {
                 id="email"
                 required
                 onChange={(e) => {
-                  setEmailReg(e.target.value);
+                  setEmailLogin(e.target.value);
                 }}
               />
             </div>
@@ -63,7 +63,7 @@ export default function Register() {
                 id="password"
                 required
                 onChange={(e) => {
-                  setPasswordReg(e.target.value);
+                  setPasswordLogin(e.target.value);
                 }}
               />
             </div>
@@ -71,17 +71,18 @@ export default function Register() {
               <button
                 type="submit"
                 className="btn btn-primary btn-register"
-                onClick={register}
+                onClick={login}
               >
-                Register
+                Login
               </button>
             </div>
             <div className="div-path-login">
-                <Link to="/login">Do you have an account? Log in!</Link>
+              <Link to="/">You don't have an account? Sign In!</Link>
             </div>
           </form>
         </div>
       </div>
     </>
   );
+    
 }

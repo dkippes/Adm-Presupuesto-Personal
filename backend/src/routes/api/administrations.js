@@ -9,7 +9,7 @@ router.get('/totalBalance', administrationsController.totalBalance);
 router.get('/listOperations', administrationsController.listOperations);
 router.get('/last10Operations', administrationsController.last10Operations);
 router.post('/addOperation', administrationsController.addOperation);
-router.post('/modifyOperation/:id', administrationsController.modifyOperation);
+router.put('/modifyOperation/:id', administrationsController.modifyOperation);
 router.post('/deleteOperation/:id', administrationsController.deleteOperation);
 
 module.exports = router;

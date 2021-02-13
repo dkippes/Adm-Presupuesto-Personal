@@ -92,7 +92,7 @@ let AdministrationsController = {
 
 
   modifyOperation: (req, res, next) => {
-    console.log(req.params.id);
+    console.log(req.body);
     db.Administrations.update(
       {
         concept: req.body.concept,
@@ -101,18 +101,15 @@ let AdministrationsController = {
       },
       {
         where: {
-          id: req.params.id,
+          id: req.body.id,
         },
       }
     );
 
     res.json({
-      meta: {
-        status: 200,
-        state: 'OK',
-        url: '/api/administrations' + req.url,
-      },
+      message: 'oka',
     });
+    
   },
 
   deleteOperation: (req, res, next) => {

@@ -27,14 +27,24 @@ let usersController = {
         });
 
         res.json({
-          messageOK: 'Usuario registrado con exito',
+          meta: {
+            status: 200,
+          },
+          data: {
+            message: 'Usuario registrado con exito',
+          },
         });
 
         
       }
 
       res.json({
-          messageError: 'Usuario ya existe'
+        meta: {
+          status: 404,
+        },
+        data: {
+          message: 'usuario existente',
+        },
       });
     });
   },
