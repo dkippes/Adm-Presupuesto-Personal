@@ -1,6 +1,6 @@
 import React, { useState} from 'react'
-import Nav from '../NavBar/NavBar';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function Register() {
   const [emailLogin, setEmailLogin] = useState('');
@@ -22,59 +22,57 @@ export default function Register() {
         }
 
         if (info.meta.status == 200) {
-          window.location = '/dashboard';
+          window.location = '/operationPanel';
         }
       });
   };
 
   
-  if (sessionStorage.getItem('userLogged')) {
-    window.location = '/dashboard';
-  } else {
-    return (
-      <div>
-        <Nav></Nav>
-        <h1>Esto es el login</h1>
-        <h2>{errorMsg}</h2>
-        <form onSubmit={(e) => e.preventDefault()}>
-          <div className="mb-3">
-            <label for="email" className="form-label">
-              Email:
-            </label>
-            <input
-              className="form-control"
-              type="email"
-              name="email"
-              id="email"
-              required
-              onChange={(e) => {
-                setEmailLogin(e.target.value);
-              }}
-            />
-          </div>
-          <div className="mb-3">
-            <label for="password" className="form-label">
-              Password:
-            </label>
-            <input
-              className="form-control"
-              type="password"
-              name="password"
-              id="password"
-              required
-              onChange={(e) => {
-                setPasswordLogin(e.target.value);
-              }}
-            />
-          </div>
-          <div className="mb-3">
-            <button type="submit" className="btn btn-primary" onClick={login}>
-              Login
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h1>Esto es el login</h1>
+      <h2>{errorMsg}</h2>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <div className="mb-3">
+          <label for="email" className="form-label">
+            Email:
+          </label>
+          <input
+            className="form-control"
+            type="email"
+            name="email"
+            id="email"
+            required
+            onChange={(e) => {
+              setEmailLogin(e.target.value);
+            }}
+          />
+        </div>
+        <div className="mb-3">
+          <label for="password" className="form-label">
+            Password:
+          </label>
+          <input
+            className="form-control"
+            type="password"
+            name="password"
+            id="password"
+            required
+            onChange={(e) => {
+              setPasswordLogin(e.target.value);
+            }}
+          />
+        </div>
+        <div className="mb-3">
+          <button type="submit" className="btn btn-primary" onClick={login}>
+            Login
+          </button>
+        </div>
+      </form>
+      <a href="">
+        <Link to="/">ir a register</Link>
+      </a>
+    </div>
+  );
     
 }

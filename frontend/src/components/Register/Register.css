@@ -1,0 +1,23 @@
+
+.register {
+  border-radius: 8px;
+  background-color: white;
+}
+
+.register-title {
+    text-align: center;
+}
+
+.button-register-div {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-register {
+    width: 50%;
+}
+
+.div-path-login {
+    display: flex;
+    justify-content: center;
+}

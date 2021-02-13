@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import Nav from '../NavBar/NavBar';
+import { Link } from 'react-router-dom';
 import '../Register/Register.css';
 import axios from 'axios';
+import Login from '../Login/Login';
 
 export default function Register() {
   const [emailReg, setEmailReg] = useState('');
@@ -23,62 +24,64 @@ export default function Register() {
           setErrorMsg(response.data.messageError);
         }
         if (response.data.messageOK) {
-          sessionStorage.setItem('userLogged', emailReg);
-          window.location = '/dashboard';
+          window.location = '/login';
         }
       });
   };
 
-  if (sessionStorage.getItem('userLogged')) {
-    window.location = '/dashboard';
-  } else {
-    return (
-      <div>
-        <Nav></Nav>
-        <h1>Esto es el register</h1>
+  return (
+    <>
+      <div className="container-sm register">
+        <h1 className="register-title">Registration</h1>
         <h2>{errorMsg}</h2>
-        <form onSubmit={(e) => e.preventDefault()}>
-          <div className="mb-3">
-            <label for="email" className="form-label">
-              Email:
-            </label>
-            <input
-              className="form-control"
-              type="email"
-              name="email"
-              id="email"
-              required
-              onChange={(e) => {
-                setEmailReg(e.target.value);
-              }}
-            />
-          </div>
-          <div className="mb-3">
-            <label for="password" className="form-label">
-              Password:
-            </label>
-            <input
-              className="form-control"
-              type="password"
-              name="password"
-              id="password"
-              required
-              onChange={(e) => {
-                setPasswordReg(e.target.value);
-              }}
-            />
-          </div>
-          <div className="mb-3">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={register}
-            >
-              Register
-            </button>
-          </div>
-        </form>
+
+        <div>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <div className="mb-3">
+              <label for="email" className="form-label">
+                Email:
+              </label>
+              <input
+                className="form-control"
+                type="email"
+                name="email"
+                id="email"
+                required
+                onChange={(e) => {
+                  setEmailReg(e.target.value);
+                }}
+              />
+            </div>
+            <div className="mb-3">
+              <label for="password" className="form-label">
+                Password:
+              </label>
+              <input
+                className="form-control"
+                type="password"
+                name="password"
+                id="password"
+                required
+                onChange={(e) => {
+                  setPasswordReg(e.target.value);
+                }}
+              />
+            </div>
+            <div className="mb-3 button-register-div">
+              <button
+                type="submit"
+                className="btn btn-primary btn-register"
+                onClick={register}
+              >
+                Register
+              </button>
+            </div>
+            <div className="div-path-login">
+                <Link to="/login">Do you have an account? Sign in!</Link>
+            </div>
+          </form>
+        </div>
       </div>
-    );
-  }
+    </>
+  );
 }
