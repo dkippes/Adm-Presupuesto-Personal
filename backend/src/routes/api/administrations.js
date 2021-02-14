@@ -7,7 +7,6 @@ let administrationsController = require('../../controllers/api/administrationsCo
 
 router.get('/totalBalance', administrationsController.totalBalance);
 router.get('/listOperations', administrationsController.listOperations);
-router.get('/last10Operations', administrationsController.last10Operations);
 router.post('/addOperation', administrationsController.addOperation);
 router.put('/modifyOperation/:id', administrationsController.modifyOperation);
 router.delete('/deleteOperation/:id', administrationsController.deleteOperation);
