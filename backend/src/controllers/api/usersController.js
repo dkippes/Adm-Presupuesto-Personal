@@ -11,14 +11,13 @@ let usersController = {
 
   userRegistration: function (req, res, next) {
 
-    console.log(req.body);
 
     db.Users.findOne({
       where: {
         email: req.body.email,
       },
     }).then((user) => {
-      console.log(user);
+      
       if (user == null) {
         
         db.Users.create({

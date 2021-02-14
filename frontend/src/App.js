@@ -7,7 +7,9 @@ import OperationPanel from './components/OperationPanel/OperationPanel';
 function App() {
   return (
     <body>
-      <h1 style={{textAlign:"center", margin:"15px 0 15px 0"}}>Personal Buged</h1>
+      <h1 style={{ textAlign: 'center', margin: '15px 0 15px 0', textDecoration:'underline' }}>
+        Personal Budget Administrator
+      </h1>
       <BrowserRouter>
         <Switch>
           <Route path="/login" exact component={Login} />

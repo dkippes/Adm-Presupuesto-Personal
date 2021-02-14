@@ -1,24 +1,31 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+import Balance from './Balance/Balance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import './OperationPanel.css';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { Link } from 'react-router-dom';
+
 
 class OperationPanel extends Component {
+
+  // STATES
   state = {
     data: [],
-    modalInsertar: false,
+    insertModal: false,
+    deleteModal: false,
     form: {
-        id: '',
+      id: '',
       concept: '',
       amount: '',
       type: 0,
       category: '',
-      tipoModal: '',
+      modalType: '',
     },
   };
+
+
+  // HTTP REQUEST
   getRequest = () => {
     axios
       .get('http://localhost:3000/api/administrations/listOperations')
@@ -37,7 +44,7 @@ class OperationPanel extends Component {
         this.state.form
       )
       .then((response) => {
-        this.modalInsertar();
+        this.insertModal();
         this.getRequest();
       })
       .catch((err) => {
@@ -46,36 +53,38 @@ class OperationPanel extends Component {
   };
 
   putRequest = () => {
-      axios
-        .put(
-          `http://localhost:3000/api/administrations/modifyOperation/${this.state.form.id}`, this.state.form
-        )
-        .then((response) => {
-          this.modalInsertar();
-          this.getRequest();
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
-  }
-
-  deleteRequest = (id) => {
-      axios
-        .delete(
-          `http://localhost:3000/api/administrations/deleteOperation/${id}`
-        )
-        .then((response) => {
-          this.getRequest();
-        });
-  }
-
-  modalInsertar = () => {
-    this.setState({ modalInsertar: !this.state.modalInsertar });
+    axios
+      .put(
+        `http://localhost:3000/api/administrations/modifyOperation/${this.state.form.id}`,
+        this.state.form
+      )
+      .then((response) => {
+        this.insertModal();
+        this.getRequest();
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
-  seleccionarOperacion = (operation) => {
+  deleteRequest = () => {
+    axios
+      .delete(`http://localhost:3000/api/administrations/deleteOperation/${this.state.form.id}`)
+      .then((response) => {
+        this.setState({deleteModal: false})
+        this.getRequest();
+      });
+  };
+
+
+  // MODAL OPERATIONS
+  insertModal = () => {
+    this.setState({ insertModal: !this.state.insertModal });
+  };
+
+  selectOperation = (operation) => {
     this.setState({
-      tipoModal: 'actualizar',
+      modalType: 'update',
       form: {
         id: operation.id,
         concept: operation.concept,
@@ -95,13 +104,14 @@ class OperationPanel extends Component {
         [e.target.name]: e.target.value,
       },
     });
-    console.log(this.state.form);
   };
 
   componentDidMount() {
     this.getRequest();
   }
 
+
+  // OPERATION PANEL RENDER
   render() {
     const { form } = this.state;
     return (
@@ -112,8 +122,8 @@ class OperationPanel extends Component {
               <button
                 className="btn btn-success btn-add-op"
                 onClick={() => {
-                  this.setState({ form: null, tipoModal: 'insertar' });
-                  this.modalInsertar();
+                  this.setState({ form: null, modalType: 'insert' });
+                  this.insertModal();
                 }}
               >
                 <FontAwesomeIcon icon={faPlus} />
@@ -121,7 +131,7 @@ class OperationPanel extends Component {
               </button>
             </div>
             <div>
-              <Link to="/login">Show Balance</Link>
+              <Balance></Balance>
             </div>
           </div>
 
@@ -147,15 +157,18 @@ class OperationPanel extends Component {
                       <button
                         className="btn btn-primary"
                         onClick={() => {
-                          this.seleccionarOperacion(operation);
-                          this.modalInsertar();
+                          this.selectOperation(operation);
+                          this.insertModal();
                         }}
                       >
                         <FontAwesomeIcon icon={faEdit} />
                       </button>
                       <button
                         className="btn btn-danger"
-                        onClick={() => { this.deleteRequest(operation.id) }}
+                        onClick={() => {
+                          this.selectOperation(operation);
+                          this.setState({ deleteModal: true });
+                        }}
                       >
                         <FontAwesomeIcon icon={faTrashAlt} />
                       </button>
@@ -166,11 +179,12 @@ class OperationPanel extends Component {
             })}
           </table>
 
-          <Modal isOpen={this.state.modalInsertar}>
+          {/* MODAL ADD/UPDATE */}
+          <Modal isOpen={this.state.insertModal}>
             <ModalHeader style={{ display: 'block' }}>
               <span
-                style={{ float: 'right' }}
-                onClick={() => this.modalInsertar()}
+                style={{ float: 'right', cursor: 'pointer' }}
+                onClick={() => this.insertModal()}
               >
                 x
               </span>
@@ -205,15 +219,28 @@ class OperationPanel extends Component {
                 />
                 <br />
                 <label htmlFor="type">Type</label>
-                <select
-                  className="form-control"
-                  onChange={this.handleChange}
-                  name="type"
-                  id="type"
-                >
-                  <option value="0">Spent</option>
-                  <option value="1">Income</option>
-                </select>
+                {this.state.modalType == 'update' ? (
+                  <select
+                    className="form-control"
+                    onChange={this.handleChange}
+                    name="type"
+                    id="type"
+                    disabled
+                  >
+                    <option value="0">Spent</option>
+                    <option value="1">Income</option>
+                  </select>
+                ) : (
+                  <select
+                    className="form-control"
+                    onChange={this.handleChange}
+                    name="type"
+                    id="type"
+                  >
+                    <option value="0">Spent</option>
+                    <option value="1">Income</option>
+                  </select>
+                )}
                 <label htmlFor="category">Category</label>
                 <input
                   value={form ? form.category : ''}
@@ -227,27 +254,48 @@ class OperationPanel extends Component {
             </ModalBody>
 
             <ModalFooter>
-              {this.state.tipoModal == 'insertar' ? (
+              {this.state.modalType == 'insert' ? (
                 <button
                   className="btn btn-success"
                   onClick={() => this.postRequest()}
                 >
-                  Insertar
+                  Insert
                 </button>
               ) : (
                 <button
                   className="btn btn-primary"
                   onClick={() => this.putRequest()}
                 >
-                  Actualizar
+                  Update
                 </button>
               )}
 
               <button
                 className="btn btn-danger"
-                onClick={() => this.modalInsertar()}
+                onClick={() => this.insertModal()}
               >
-                Cancelar
+                Cancel
+              </button>
+            </ModalFooter>
+          </Modal>
+
+          {/* MODAL DELETE */}
+          <Modal isOpen={this.state.deleteModal}>
+            <ModalBody style={{ textAlign: 'center' }}>
+              Are you sure you want to delete this operation?
+            </ModalBody>
+            <ModalFooter>
+              <button
+                className="btn btn-danger"
+                onClick={() => this.deleteRequest()}
+              >
+                Sí
+              </button>
+              <button
+                className="btn btn-secundary"
+                onClick={() => this.setState({ deleteModal: false })}
+              >
+                No
               </button>
             </ModalFooter>
           </Modal>

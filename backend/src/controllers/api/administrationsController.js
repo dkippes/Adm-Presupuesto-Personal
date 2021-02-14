@@ -4,56 +4,71 @@ const storage = require('node-sessionstorage');
 let AdministrationsController = {
 
   totalBalance: function (req, res, next) {
-    /* db.Administrations.findAll({
-      include: [{ association: 'users', where: { email: "pablo@pablo.com" } }],
-    }).then((administration) => {
-
-      let totalBalance = 0;
-      
-      administration.forEach(adm => {
-        if(adm.type == 1) {
-          totalBalance += adm.amount;
-        } else {
-          totalBalance -= adm.amount;
-        }
-      })
-
-      res.json({
-        meta: {
-          status: 200,
-          state: 'OK',
-          url: '/api/administrations' + req.url,
+    
+    db.Users.findOne({
+      where: {
+        email: storage.getItem('userLogged'),
+      },
+    }).then((user) => {
+      db.Administrations.findAll({
+        where: {
+          user_id: user.id,
         },
-        data: {
-          totalBalance: totalBalance
-        }
+      }).then((operations) => {
+        let totalBalance = 0;
+
+        operations.forEach((adm) => {
+          if (adm.type == 1) {
+            totalBalance += adm.amount;
+          } else {
+            totalBalance -= adm.amount;
+          }
+        });
+
+        res.json({
+          meta: {
+            status: 200,
+          },
+          data: {
+            totalBalance: totalBalance,
+          },
+        });
       });
-    }); */
+    });
+    
   },
 
   
   last10Operations: function (req, res, next) {
-    /* db.Administrations.findAll({
-      limit: 10
-    })
-    .then(administration => {
 
-      res.json({
-        meta: {
-          status: 200,
-          state: 'OK',
-          url: '/api/administrations' + req.url,
+    db.Users.findOne({
+      where: {
+        email: "kippes.diego@gmail.com",
+      },
+    }).then((user) => {
+      db.Administrations.findAll({
+        where: {
+          user_id: user.id,
         },
-        data: {
-          last10Operations: administration,
-        },
+        limit: 10,
+      }).then((operations) => {
+        res.json({
+          meta: {
+            status: 200,
+          },
+          data: {
+            last10Operations: operations,
+          },
+        });
       });
-
-    }) */
+    });
   },
 
+
+
+
   listOperations: function(req, res, next) {
-    console.log(req.session.userLogged);
+
     db.Users.findAll({
       include: [{ association: 'administrations' }],
       where: {
@@ -61,14 +76,14 @@ let AdministrationsController = {
       },
     }).then((administration) => {
       res.json(administration[0].administrations);
-    });
+    });    
   },
 
 
   
 
   addOperation: (req, res, next) => {
-      console.log(req.body);
+
       db.Users.findOne({
         where: {
           email: storage.getItem('userLogged'),
@@ -84,7 +99,7 @@ let AdministrationsController = {
       });
 
       res.json({
-        message: "oka"
+        message: "operation added"
       })
     
   },
@@ -92,7 +107,7 @@ let AdministrationsController = {
 
 
   modifyOperation: (req, res, next) => {
-    console.log(req.body);
+    
     db.Administrations.update(
       {
         concept: req.body.concept,
@@ -107,14 +122,14 @@ let AdministrationsController = {
     );
 
     res.json({
-      message: 'oka',
+      message: 'operation updated',
     });
     
   },
 
   deleteOperation: (req, res, next) => {
     
-    console.log(req.params.id);
+    
     db.Administrations.destroy({
       where: {
         id: req.params.id
@@ -122,7 +137,7 @@ let AdministrationsController = {
     })
 
     res.json({
-      message: 'oka',
+      message: 'operation deleted',
     });
     
   },
