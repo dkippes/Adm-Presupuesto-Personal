@@ -30,7 +30,7 @@ let usersController = {
             status: 200,
           },
           data: {
-            message: 'Usuario registrado con exito',
+            message: 'User Registration Successfully',
           },
         });
 
@@ -42,7 +42,7 @@ let usersController = {
           status: 404,
         },
         data: {
-          message: 'usuario existente',
+          message: 'this user already exists',
         },
       });
     });
@@ -61,7 +61,7 @@ let usersController = {
             status: 400,
           },
           data: {
-            message: 'El usuario no existe',
+            message: "this user doesn't exists",
           },
         });
       } else {
@@ -74,7 +74,7 @@ let usersController = {
               status: 200
             },
             data: {
-              message: "Usuario logeado con exito"
+              message: "User logged sucessfully"
             }
           });
         } else {
@@ -83,7 +83,7 @@ let usersController = {
               status: 404,
             },
             data: {
-              message: 'Error de credenciales',
+              message: 'the email or the password are wrong',
             },
           });
         }

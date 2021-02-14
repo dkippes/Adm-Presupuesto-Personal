@@ -38,33 +38,6 @@ let AdministrationsController = {
     
   },
 
-  
-  last10Operations: function (req, res, next) {
-
-    db.Users.findOne({
-      where: {
-        email: "kippes.diego@gmail.com",
-      },
-    }).then((user) => {
-      db.Administrations.findAll({
-        where: {
-          user_id: user.id,
-        },
-        limit: 10,
-      }).then((operations) => {
-        res.json({
-          meta: {
-            status: 200,
-          },
-          data: {
-            last10Operations: operations,
-          },
-        });
-      });
-    });
-  },
-
-
 
 
   listOperations: function(req, res, next) {
