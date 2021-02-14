@@ -9,15 +9,21 @@ export default function Register() {
   const [errorMsg, setErrorMsg] = useState('');
 
   const login = () => {
-    axios({
-      method: 'post',
-      url: 'http://localhost:3000/api/users/login',
-      data: {
-        email: emailLogin,
-        password: passwordLogin,
-      },
-    }).then(({data: info }) => {
-        
+
+    let emailCondition = !/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})/i.test(emailLogin);
+    let passwordCondition = passwordLogin.length < 0;
+
+    if (emailCondition || passwordCondition) {
+      setErrorMsg('* the email or password is invalid');
+    } else {
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/api/users/login',
+        data: {
+          email: emailLogin,
+          password: passwordLogin,
+        },
+      }).then(({ data: info }) => {
         if (info.meta.status == 404 || info.meta.status == 400) {
           setErrorMsg(info.data.message);
         }
@@ -26,6 +32,9 @@ export default function Register() {
           window.location = '/operationPanel';
         }
       });
+    }
+
+    
   };
 
   
@@ -33,7 +42,6 @@ export default function Register() {
     <>
       <div className="container-sm register">
         <h1 className="register-title">Login</h1>
-        <h2>{errorMsg}</h2>
 
         <div>
           <form onSubmit={(e) => e.preventDefault()}>
@@ -67,6 +75,7 @@ export default function Register() {
                 }}
               />
             </div>
+            <h6 className="errorMsg-Login">{errorMsg}</h6>
             <div className="mb-3 button-register-div">
               <button
                 type="submit"

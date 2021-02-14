@@ -21,3 +21,7 @@
     display: flex;
     justify-content: center;
 }
+
+.errorMsg-Login {
+    color: rgb(202, 14, 14);
+}

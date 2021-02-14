@@ -10,31 +10,38 @@ export default function Register() {
   const [errorMsg, setErrorMsg] = useState('');
 
   const register = () => {
-    axios({
-      method: 'post',
-      url: 'http://localhost:3000/api/users/register',
-      data: {
-        email: emailReg,
-        password: passwordReg,
-      },
-    }).then(({ data: info }) => {
-      
-      if (info.meta.status == 404) {
-        setErrorMsg(info.data.message);
-      }
 
-      if (info.meta.status == 200) {
-        window.location = '/login';
-      }
-    });
+    let emailCondition = !/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})/i.test(emailReg)
+    let passwordCondition = passwordReg.length < 0;
+
+    if (emailCondition || passwordCondition) {
+      setErrorMsg('* the email or password is invalid');
+    } else {
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/api/users/register',
+        data: {
+          email: emailReg,
+          password: passwordReg,
+        },
+      }).then(({ data: info }) => {
+        if (info.meta.status == 404) {
+          setErrorMsg(info.data.message);
+        }
+
+        if (info.meta.status == 200) {
+          window.location = '/login';
+        }
+      });
+    }
+
+    
   };
 
   return (
     <>
       <div className="container-sm register">
         <h1 className="register-title">Registration</h1>
-        <h2>{errorMsg}</h2>
-
         <div>
           <form onSubmit={(e) => e.preventDefault()}>
             <div className="mb-3">
@@ -67,6 +74,7 @@ export default function Register() {
                 }}
               />
             </div>
+            <h6 className="errorMsg-Login">{errorMsg}</h6>
             <div className="mb-3 button-register-div">
               <button
                 type="submit"
@@ -77,7 +85,7 @@ export default function Register() {
               </button>
             </div>
             <div className="div-path-login">
-                <Link to="/login">Do you have an account? Log in!</Link>
+              <Link to="/login">Do you have an account? Log in!</Link>
             </div>
           </form>
         </div>
